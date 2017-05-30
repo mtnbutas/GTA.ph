@@ -1,0 +1,5 @@
+django_notifications_hq==1.2
+django_ckeditor==5.2.2
+Django==1.11
+notifications==0.3.2
+django_taggit==0.22.1
