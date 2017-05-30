@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+{{blogpost.title}}
+{% endblock %}
+{% block styles %}
+<link href="{% static 'css/blog-post.css' %}" rel="stylesheet">
+<link href="{% static 'css/navbar.css' %}" rel="stylesheet">
+{% endblock %}
+{% block pagecontent %}
+<article>
+    <header style="background: url('{{MEDIA_ROOT}} {{blogpost.coverphoto.url}}');">
+        <h1>{{blogpost.title}}</h1>
+    </header>
+    <section class="container-fluid main-body">
+        <section class="row">
+            <div class="hidden-xs col-sm-1 col-md-2">  
+            </div>
+            <div class="col-xs-12 col-sm-10 col-md-8">
+                <div class="content-holder">
+                    <div class="content-description">
+                        {% if blogpost.owner.pk == request.user.pk %}
+                        <form role="form" method="" style="right: 25px; position: absolute;" id="delete">
+                            {% csrf_token %}
+                            <button class="btn" name="delete-btn" onclick="deleteClick();" style="padding:0; background: transparent;">
+                            <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                        </form>
+                        <a href="{% url 'post-edit' blogpost.pk %}" style="right: 50px; position: absolute;" title="Edit post">
+                        <span class="glyphicon glyphicon-edit"></span>
+                        </a>
+                        {% endif %}
+                        <div class="author-avatar">
+                            <img src="{{MEDIA_ROOT}} {{blogpost.owner.profile.avatar_url}}" class="img-circle">
+                        </div>
+                        <div class="author-name">
+                            <h3><a href="{% url 'user-profile' blogpost.owner.pk blogpost.owner.username %}" style="color: black">{{blogpost.owner.first_name}} {{blogpost.owner.last_name}} 
+                                (@{{blogpost.owner.username}})</a>
+                            </h3>
+                        </div>
+                        <div class="row blog-info">
+                            <div class="col-xs-12 col-sm-6">
+                                <span class="lead text-muted"><i class="fa fa-clock-o"></i> Posted: {{blogpost.create_date | date:'M d, Y'}}</span>
+                            </div>
+                            <div class="col-xs-12 col-sm-6">
+                                <div class="lead text-muted" style="display: inline-flex; align-items: center;">
+                                    {% if request.user.is_authenticated %}
+                                    <form role="form" method="POST" style="margin-right: 10px">
+                                        {% csrf_token %}
+                                        {% if liked == False %}
+                                        <button type="submit" class="btn btn-default" name="like-btn">
+                                        {% else %}
+                                        <button type="submit" class="btn btn-default" name="like-btn" style="background-color: lime ">
+                                        {% endif %}
+                                        <span class="glyphicon glyphicon-thumbs-up"></span> | {{blogpost.allLikes.count}}
+                                        </button>
+                                    </form>
+                                    {% else %}
+                                    {{blogpost.allLikes.count}} likes
+                                    |
+                                    {% endif %}
+                                    
+                                    {% if request.user.is_authenticated %}
+                                    <form role="form" method="POST">
+                                        {% csrf_token %}
+                                        {% if disliked == False %}
+                                        <button type="submit" class="btn btn-default" name="dislike-btn">
+                                        {% else %}
+                                        <button type="submit" class="btn btn-default" name="dislike-btn" style="background-color: red">
+                                        {% endif %}
+                                        <span class="glyphicon glyphicon-thumbs-down"></span> | {{blogpost.allDislikes.count}} 
+                                        </button>
+                                    </form>
+                                    {% else %}
+                                    {{blogpost.allDislikes.count}} dislikes
+                                    {% endif %}
+                                    <a href="http://www.facebook.com/share.php?u=127.0.0.1:8000{{blogpost.get_absolute_url}}" title="Share on Facebook">
+                                    <img src="{% static 'img/fb.png' %}" style="width: 35px; height: 35px; margin-left: 15px">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-body">
+                        <hr>
+                        {{blogpost.content | safe | linebreaks}}
+                        <hr>
+                        <span class="glyphicon glyphicon-tags"></span> Tags:
+                        {% for tag in tags %}
+                        <a href="{% url 'search-from-tags' tags=tag %}">{{ tag }}</a>,
+                        {% endfor %}
+                    </div>
+                    <!-- THE TAGS -->
+                    <div class="well">
+                        <form role="form" method="POST" name="comment-form">
+                            {% csrf_token %}
+                            {% if request.user.is_authenticated %}
+                            <h4>Leave a Comment:</h4>
+                            <div class="form-group">
+                                <textarea name="comment" class="form-control" rows="3" maxlength="150"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary" name="comment-btn">Submit</button>
+                            {% else %}
+                            <h4><a href="{% url 'login' %}">Log in</a> to comment</h4>
+                            <div class="form-group">
+                                <textarea name="comment" class="form-control" rows="3" maxlength="150" disabled="True"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary" disabled>Submit</button>
+                            {% endif %}
+                        </form>
+                    </div>
+                    <hr>
+                    {% for comment in comments %}
+                    <div class="media">
+                        <a class="pull-left" href="{% url 'user-profile' comment.ownerId.pk comment.ownerId.username %}">
+                        <img class="media-object" src="{{ comment.ownerId.profile.avatar_url }}" style="height: 90px; width: 90px; object-fit: cover; object-position: center; border-radius: 50%" alt="">
+                        </a>
+                        <div class="media-body">
+                            <span>{{ comment.ownerId.first_name }} {{ comment.ownerId.last_name }} <a href="{% url 'user-profile' comment.ownerId.pk comment.ownerId.username %}">@{{ comment.ownerId.username }}</a>
+                            </span>
+                            <br>
+                            <small>{{ comment.create_date }}</small>
+                            <br>
+                            {{ comment.content | linebreaks }}
+                        </div>
+                    </div>
+                    <hr>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="hidden-xs col-sm-1 col-md-2">
+            </div>
+        </section>
+    </section>
+</article>
+<hr>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+    function deleteClick() {
+        if (confirm('Do you want to permanently delete this post?')) {
+            document.getElementById("delete").method = "POST";
+           document.getElementById("delete").submit();
+       } else {
+            // document.getElementBy
+       }
+    }
+</script>
+{% endblock %}

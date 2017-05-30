@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block styles %}
+    <link href="{% static 'css/login.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block pagecontent %}
+<!-- Page Content -->
+<div class="container" style="padding: 5%;">  
+    <div class="form">
+    <form class="login-form" method="POST">
+    {% csrf_token %}
+      <input type="text" name="first_name" placeholder="first name" value="{{ first_name }}" style="width:49%; float: left; margin-right: 2%"/>
+      <input type="text" name="last_name" placeholder="last name" value="{{ last_name }}" style="width:49%; float: left"/>
+      <input type="text" name="email" placeholder="e-mail"/>
+      <input type="text" name="username" placeholder="username"/>
+      <input type="password" name="password1" placeholder="password" style="width:49%; float: left; margin-right: 2%"/>
+      <input type="password" name="password2" placeholder="re-type password" style="width:49%; float: left"/>
+      <button>Register</button>
+      {{ error_message }}
+      <p class="message">Already have an account? <a href="{% url 'login' %}">Log in!</a></p>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'js/background-random.js' %}"></script>
+{% endblock %}
+
+

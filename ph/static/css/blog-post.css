@@ -1,0 +1,164 @@
+/*!
+ * Start Bootstrap - Blog Post (http://startbootstrap.com/)
+ * Copyright 2013-2016 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
+ */
+
+body {
+    padding-top: 62px; 
+    /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+}
+
+footer {
+    margin: 50px 0;
+}
+
+h1{
+	word-wrap: break-word;
+}
+
+div.lead img{
+    display: block;
+    max-width: 100% !important;
+    height: auto !important;
+}
+header {
+    margin-top: 0;   
+    min-height: 600px !important;
+    background-size: cover !important;
+    background-attachment: fixed;
+    display: table;
+    width: 100% !important;
+    background-repeat: no-repeat !important;
+}
+
+header h1 {
+    text-align: center;
+    color: #fff;
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 3em;
+    text-shadow: 3px 3px rgba(0,0,0,1);
+}
+
+section.row{
+	-webkit-box-shadow: inset 10px 35px 158px -52px rgba(0,0,0,0.75);
+	-moz-box-shadow: inset 10px 35px 158px -52px rgba(0,0,0,0.75);
+	box-shadow: inset 10px 35px 158px -52px rgba(0,0,0,0.75);
+}
+
+.background-bar {
+    background: #dedede;
+    height: 90px;
+    -webkit-box-shadow: inset 0px 4px 12px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    inset 0px 4px 12px 0px rgba(50, 50, 50, 0.75);
+    box-shadow:         inset 0px 4px 12px 0px rgba(50, 50, 50, 0.75);
+}
+
+.main-body {
+    background: #ffffff;
+    -webkit-box-shadow: 0px -4px 14px 0px rgba(50, 50, 50, 0.35);
+    -moz-box-shadow:    0px -4px 14px 0px rgba(50, 50, 50, 0.35);
+    box-shadow:         0px -4px 14px 0px rgba(50, 50, 50, 0.35);
+}
+
+.content-holder {
+    margin-top: -140px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    padding: 2px;
+}
+
+.content-description {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    background: #fff;
+    height: 130px;
+    padding: 10px;
+    -webkit-box-shadow: 0px 0px 12px 4px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    0px 0px 12px 4px rgba(50, 50, 50, 0.75);
+    box-shadow:         0px 0px 12px 4px rgba(50, 50, 50, 0.75);
+}
+
+.author-social {
+    position: absolute;
+    margin-top: -35px;
+}
+.author-social-left {
+    left : 0;
+    width: 40%;
+    text-align: right;
+}
+.author-social-right {
+    right : 0;
+    width: 40%;
+}
+.author-social img {
+    background: #e8e8e8;
+    border-radius: 50%;
+    border: 2px solid #e8e8e8;
+}
+
+.author-avatar {
+    text-align:center;
+    margin-top: -70px;
+}
+.author-avatar img {
+    width: 130px;
+    height: 130px;
+    border: 4px solid #e8e8e8;
+    -webkit-box-shadow: 0px 0px 12px 4px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    0px 0px 12px 4px rgba(50, 50, 50, 0.75);
+    box-shadow:         0px 0px 12px 4px rgba(50, 50, 50, 0.75);
+    object-fit: cover; 
+    object-position: center;
+}
+.author-name {
+    text-align:center;
+}
+.blog-info {
+    text-align: center;
+}
+
+.content-body {
+    background: #fff;
+    /*min-height: 600px;*/
+    padding: 40px 5px;
+    font-size: 1.2em;
+    color: #303030;
+    padding-right: 20px; 
+    padding-left: 20px;
+}
+
+.content-body img{
+    max-width: 100% !important;
+    height: auto !important;
+}
+
+@media(max-width:768px){
+    header {
+        min-height: 400px;
+        max-height: 400px;
+    }
+    .author-avatar {
+        margin-top: -40px;
+    }
+    .author-avatar img {
+        width: 75px;
+        height: 75px;
+    }
+    .author-name h3 {
+        font-size: 1.2em;
+    }
+    .author-social {
+        margin-top: -25px;
+    }
+    .author-social img {
+        width: 32px;
+    }
+}
+
+.content-description .glyphicon{
+    font-size: 20px;
+    color: black;
+}

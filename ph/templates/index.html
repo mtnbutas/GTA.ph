@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block styles %}
+<!-- <link href="{% static 'css/navbar.css' %}" rel="stylesheet"> -->
+<link href="{% static 'css/index.css' %}" rel="stylesheet">
+{% endblock %}
+{% block pagecontent %}
+<div class="container home-slider">
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+            {% for post in blogposts%} 
+            {% if forloop.counter == 1 %}
+            <div class="item active">
+                <div class="fill" style="background-image:url('{{MEDIA_ROOT}} {{post.coverphoto.url}}');"></div>
+                <div class="carousel-caption">
+                    <h4><a href="{% url 'post-detail' post.pk post.slug %}">{{post.title}}</a></h4>
+                </div>
+            </div>
+            <!-- End Item -->
+            {% elif forloop.counter == 2 %}
+            <div class="item">
+                <div class="fill" style="background-image:url('{{MEDIA_ROOT}} {{post.coverphoto.url}}');"></div>
+                <div class="carousel-caption">
+                    <h4><a href="{% url 'post-detail' post.pk post.slug %}">{{post.title}}</a></h4>
+                </div>
+            </div>
+            <!-- End Item -->
+            {% elif forloop.counter == 3 %}
+            <div class="item">
+                <div class="fill" style="background-image:url('{{MEDIA_ROOT}} {{post.coverphoto.url}}');"></div>
+                <div class="carousel-caption">
+                    <h4><a href="{% url 'post-detail' post.pk post.slug %}">{{post.title}}</a></h4>
+                </div>
+            </div>
+            <!-- End Item -->
+            {% elif forloop.counter == 4 %}
+            <div class="item">
+                <div class="fill" style="background-image:url('{{MEDIA_ROOT}} {{post.coverphoto.url}}');"></div>
+                <div class="carousel-caption">
+                    <h4><a href="{% url 'post-detail' post.pk post.slug %}">{{post.title}}</a></h4>
+                </div>
+            </div>
+            <!-- End Item -->
+            {% elif forloop.counter == 5 %}
+            <div class="item">
+                <div class="fill" style="background-image:url('{{MEDIA_ROOT}} {{post.coverphoto.url}}');"></div>
+                <div class="carousel-caption">
+                    <h4><a href="{% url 'post-detail' post.pk post.slug %}">{{post.title}}</a></h4>
+                </div>
+            </div>
+            <!-- End Item -->
+            {% endif %} 
+            {% endfor %}
+            <!-- Controls -->
+            <div class="carousel-controls">
+                <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+                </a>
+                <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+                </a>
+            </div>
+        </div>
+        <!-- End Carousel Inner -->
+        <ul class="list-group col-sm-3">
+            <div>
+                <!-- <div> -->
+                LATEST POSTS
+                <!-- </div> -->
+            </div>
+            {% for post in blogposts%} {% if forloop.counter == 1 %}
+                <a data-slide-to="0" class="list-group-item active" href="{% url 'post-detail' post.pk post.slug %}">{{ post }}</a> 
+                {% elif forloop.counter == 2 %}
+                <a data-slide-to="1" class="list-group-item" href="{% url 'post-detail' post.pk post.slug %}">{{ post }}</a> 
+                {% elif forloop.counter == 3 %}
+                <a data-slide-to="2" class="list-group-item" href="{% url 'post-detail' post.pk post.slug %}">{{ post }}</a> 
+                {% elif forloop.counter == 4 %}
+                <a data-slide-to="3" class="list-group-item" href="{% url 'post-detail' post.pk post.slug %}">{{ post }}</a> 
+                {% elif forloop.counter == 5 %}
+                <a data-slide-to="4" class="list-group-item" href="{% url 'post-detail' post.pk post.slug %}">{{ post }}</a> 
+                {% endif %} 
+            {% endfor %}
+        </ul>
+    </div>
+    <!-- End Carousel -->
+</div>
+<section id="blog-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="row">
+                    {% for post in blogposts %} 
+                    {% if forloop.counter > 5 and forloop.counter < 12 %} 
+                    <div class="col-lg-6 col-md-6">
+                        <aside>
+                            <img src="{{MEDIA_ROOT}} {{post.coverphoto.url}}" class="img-responsive" style="width: 100%; height: 230px;">
+                            <div class="content-title">
+                                <div class="text-center">
+                                    <h3 style="word-wrap: break-word;"><a href="{% url 'post-detail' post.pk post.slug %}">{{post}}</a></h3>
+                                </div>
+                            </div>
+                            <div class="content-footer" style="background: url('{% static 'bg/nav.jpg' %}'); background-position: fixed">
+                                <img class="user-small-img" src="{{MEDIA_ROOT}} {{post.owner.profile.avatar_url}}" style=" object-fit: cover !important; object-position: center !important;">
+                                <span style="font-size: 16px;color: #fff;">{{post.owner.username}}</span>
+                            </div>
+                        </aside>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <!--           // RECENT POST===========-->
+            <div class="col-lg-4">
+                <div class="widget-sidebar">
+                    <h2 class="title-widget-sidebar">// POPULAR</h2>
+                    <div class="content-widget-sidebar">
+                        <ul>
+                            {% for bp in top %}
+                            {% if forloop.counter < 5 %}
+                            <li class="recent-post">
+                                <div class="post-img"><a href="{% url 'post-detail' bp.pk bp.slug %}">
+                                    <img src="{{bp.coverphoto.url}}" class="img-responsive" style="width: 100px; height: 80px; object-position: center; object-fit: cover;"></a>
+                                </div>
+                                <a href="{% url 'post-detail' bp.pk bp.slug %}">
+                                    <h5 style="word-wrap: break-word;">{{ bp }}</h5>
+                                </a>
+                                <p><small><i class="fa fa-calendar" data-original-title="" title=""></i>{{bp.create_date}}</small></p>
+                            </li>
+                            {% endif %}
+                            {% endfor %}
+                            <hr>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+{% block footer %}{%endblock%}
+{% block script %}
+<script src="js/jquery-3.1.1.js"></script>
+<script src="js/bootstrap.js"></script>
+<script>
+    $(document).ready(function() {
+    
+        var clickEvent = false;
+        var leftClick = false;
+        $(".left").click(function() {
+            leftClick = true;
+            var count = $('.list-group a').length - 1;
+            var current = $('.list-group a.active');
+            if(current.removeClass('active').prev().hasClass('list-group-item')) {
+                current.removeClass('active').prev().addClass('active');
+            } else {
+                $('.list-group a').last().addClass('active');
+            }
+        });
+    
+        $('#myCarousel').carousel({
+            interval: 4000
+        }).on('click', '.list-group a', function() {
+            clickEvent = true;
+            $('.list-group a').removeClass('active');
+            $(this).addClass('active');
+        }).on('slid.bs.carousel', function(e) {
+            if(!clickEvent && !leftClick) {
+                var count = $('.list-group a').length - 1;
+                var current = $('.list-group a.active');
+                current.removeClass('active').next().addClass('active');
+                var id = parseInt(current.data('slide-to'));
+                if(count == id) {
+                    $('.list-group a').first().addClass('active');
+                }
+            }
+            clickEvent = false;
+            leftClick = false;
+        });
+    
+    
+    
+    })
+    
+    
+    $(window).load(function() {
+        var boxheight = $('#myCarousel .carousel-inner').innerHeight();
+        var itemlength = $('#myCarousel .item').length;
+        var triggerheight = Math.round(boxheight / itemlength + 1);
+        $('#myCarousel .list-group-item').outerHeight(triggerheight);
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+    
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+    
+    for(i = 0; i < acc.length; i++) {
+        acc[i].onclick = function() {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if(panel.style.maxHeight) {
+                panel.style.maxHeight = null;
+            } else {
+                panel.style.maxHeight = panel.scrollHeight + "px";
+            }
+        }
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    {{ user.username }}
+{% endblock %}
+
+{% block styles %}
+    <link href="{% static 'css/blog-post.css' %}" rel="stylesheet">
+    <link href="{% static 'css/navbar.css' %}" rel="stylesheet">
+    <link href="{% static 'css/article-lists/article-list-basic.css' %}" rel="stylesheet" >
+    <link href="{% static 'css/profile.css' %}" rel="stylesheet" >
+{% endblock %}
+
+{% block pagecontent %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12" style="background: white; width: 98%; margin: 20px 1%; padding: 20px; box-shadow: 5px 5px 25px #ccc ;">
+            <div class="user-img" style="width: 100%;">
+                <div style="background: url('{{MEDIA_ROOT}} {{user.profile.avatar_url}}'); background-size: cover; background-position: center center; background-repeat: no-repeat; height: 150px; width: 150px; margin: 0 auto; border-radius: 50%;"></div>
+            </div>
+            <div class="row" style="text-align: center; padding: 0;">
+                <h3 style="margin-bottom: 0">{{ user.first_name }}
+                {{ user.last_name}}</h3>
+                <span>(@{{ user.username }})</span>
+            </div>
+            <hr>
+            <p style="word-wrap: break-word; text-align:center; padding-bottom: 5px; width: 70%; margin: 0 auto">
+                    {{ user.profile.bio }}<br>
+            </p>
+            {% if user == request.user %}
+                <hr>
+                <div style="text-align: right; width: 150px; bottom: 20px; right: 20px; position: absolute;"><a href="{% url 'edit-profile' %}" class="btn btn-info" style="width: 100%;">Edit Profile</a></div>
+            {% endif %}
+        </div>
+        {% if user_posts %}
+            {% for post in user_posts %}
+            <div class="col-md-4 col-sm-6" style="height: 400px; min-height: 400px; max-height: 600px; margin-bottom: 20px;">
+                <div style="background: white; height: 100%; width: 98%; margin: 0 auto;  box-shadow:5px 5px 20px #888888;">
+                    <a href="{% url 'post-detail' post.pk post.slug %}" style="display: block; width: 100%; height: 210px; overflow: hidden;">
+                        <div style="background: url('{{MEDIA_ROOT}} {{post.coverphoto.url}}'); background-repeat: no-repeat; background-position: center center; background-size: cover; width: 100%; height: 100%;"></div>
+                    </a>
+                    <div style="padding: 0 20px">
+                        <h3 style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;"><a href="{% url 'post-detail' post.pk post.slug %}">{{post}}</a></h3>
+                        <p>{{post.content | truncatewords:20 | striptags | safe}} </p>
+                        <a href="{% url 'post-detail' post.pk post.slug %}" class="read-more" style="">Read more &rarr;</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+         {% else %}
+            <div class="col-md-12">
+                <h3 style="color: #777; font-style: italic; text-align: center; margin-top: 30px"> No posts to show. <span><b><a href="{% url 'post-create' %}"> Create a post </a></b></span> </h3>
+                
+            </div>
+        {% endif %}
+    </div>
+
+     </div>
+{% endblock %}

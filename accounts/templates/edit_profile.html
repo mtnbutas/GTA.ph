@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Edit Profile
+{% endblock %}
+
+{% block styles %}
+	<link href="{% static 'css/blog-post.css' %}" rel="stylesheet">
+    <link href="{% static 'css/navbar.css' %}" rel="stylesheet">
+    <link href="{% static 'css/login.css' %}" rel="stylesheet">
+    <style>
+        .form{
+            max-width: 100% !important;
+        }
+       #editProfile #preview{
+            margin: 0 auto;
+            width: 50%;
+            background-size: cover !important;
+            background-position: center center !important;
+            background-repeat: no-repeat !important;
+       }
+       #editProfile textarea{
+            width: 100%;
+       }
+    </style>
+{% endblock %}
+
+{% block pagecontent %}
+	<div class="container">
+
+        <div class="row">
+        <!-- user profile side column -->
+        	<div class="col-md-offset-3 col-md-6">
+
+        		<div class="well form">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#edit">Profile</a></li>
+                        <li><a data-toggle="tab" href="#account">Account</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="edit" class="tab-pane fade in active">
+                            <br>
+                            <form id="editProfile" action="{% url 'edit-profile' %}" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="first_name">First Name</label>
+                                        {{ form.first_name }}
+                                        
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="first_name">Last Name</label>
+                                        {{ form.last_name }}
+                                    </div>
+                                </div>
+                                <div id="preview" style="background: url('{{ request.user.profile.avatar_url }}')"></div>
+                                <br>
+                                {{ form.avatar }}
+                                <br>
+                                <label for="bio">Bio</label>
+                                {{ form.bio }}
+                                <br>
+                                {{ form.errors }}
+                                <br>
+                                <button class="btn btn-primary" name="edit-prof">Save</button>
+                            </form>
+                        </div>
+
+                        <div id="account" class="tab-pane fade">
+                          <h3>Change Password</h3>
+                          <form id="changeProfile" action="{% url 'edit-profile' %}" method="POST">
+                                {% csrf_token %}
+                                    <label for="first_name">Current Password</label>
+                                    <input type="password" name="currpassword">
+                                    <br>
+                                    <label for="first_name">New Password</label>
+                                    <input type="password" name="password1">
+                                    <br>
+                                    <label for="first_name">Confirm New Password</label>
+                                    <input type="password" name="password2">
+                                    <br>
+                                    {{error_message}}
+                                <button class="btn btn-primary" name="change-password">Change Password</button>
+                            </form>
+                            <form id="deleteUser" method="">
+                                {% csrf_token %}
+                                <button class="btn btn-primary" onclick="deleteClick();" name="delete-acc">Delete Account</button>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- /.well -->
+                </div>
+        	<!-- end of profile column -->
+        	</div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+<script>
+    var cw = $('#preview').width();
+    $('#preview').css({'height':cw+'px'});
+
+   $( window ).resize(function() {
+        var cw = $('#preview').width();
+        $('#preview').css({'height':cw+'px'});
+    });
+    
+    function readURL(input) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#preview').css('background', "url('" + e.target.result + "')");
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $('input[type="file"]').change(function(){
+        readURL(this);
+    });
+
+    function deleteClick() {
+        if (confirm('Do you want to permanently delete this account?')) {
+            document.getElementById("deleteUser").method = "POST";
+       } else {
+       }
+    }
+</script>
+{% endblock %}
